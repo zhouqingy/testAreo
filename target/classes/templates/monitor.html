@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <title>全局监控</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <link th:href="@{/js/pluginsPackage/bootstrap-3.3.0/bootstrap.css}" rel="stylesheet" type="text/css"></link>
+    <link th:href="@{/js/pluginsPackage/swiper/swiper.min.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css"></link>
+	  <link th:href="@{/css/office_efficiency_index.css}" rel="stylesheet" type="text/css"></link>
+	  <script type="text/javascript">
+      //埋点全局变量
+      var gDataGather={
+          systemCode:"dataanalysis",
+          systemName:"CRM数据分析",
+          moduleCode:"dataanalysis-m001",
+          moduleName:"稳定运营",
+          pageCode:"dataanalysis-m001-p0007",
+          pageName:"厅店效能分析",
+          param:"{}"
+      }
+   </script>
+</head> 
+<body>
+    <div class="container-fluid container-bg office-efficiency-index">
+	    <div class="row  office-header">
+	        <div class="col-sm-12 col-md-12 pd  title-info">全局监控</div>
+	        <div class="col-sm-5  col-md-5 pd analysis-info">XXXX-XXXX</div>
+	        
+	        <!--地域渠道条件选择-->
+	        <div id="select-group-channel-tablebar" class="select-group-channel-tablebar">
+				 <div class="row">
+			       <div class="col-sm-2  col-md-2 pd" style="color:#fff;height:40px;line-height:35px;margin-top:15px;text-align:right;width:110px;font-size:15px;">地域选择：</div>
+			       <div class="col-sm-4  col-md-4 pd" style="height:40px;margin-top:15px;">
+			           <input type="text" id="selectCity" name="cityCode" class="form-control" style="width:150px;"/>
+			       </div>
+			       <div class="col-sm-2  col-md-2 pd" style="color:#fff;height:40px;line-height:35px;margin-top:15px;text-align:right;width:110px;font-size:15px;">区域选择：</div>
+			       <div class="col-sm-4  col-md-4 pd" style="height:40px;margin-top:15px;">
+			           <input type="text" id="selectCounty" name="countyCode" class="form-control" style="width:150px;"/>
+			       </div>
+				 </div>
+				 <div class="row">
+				      <div class="col-sm-2  col-md-2 pd" style="color:#fff;height:40px;line-height:35px;margin-top:15px;text-align:right;width:110px;font-size:15px;">渠道名称：</div>
+				      <div class="col-sm-6  col-md-6 pd" style="height:40px;margin-top:15px;">
+				         <input type="text" id="channel_name" name="channelName" class="form-control" style="width:330px;" placeHolder=""/>
+				      </div>
+				      <div class="col-sm-4  col-md-4 pd" style="height:40px;margin-top:15px;text-align:center;">
+				          <button type="button" class="btn btn-info btn-sm" style="height:35px;width:70px;margin-left:10px;background:#181C41;" onclick="doQueryChannelName();">查询</button>
+				          <button type="button" class="btn btn-info btn-sm" style="height:35px;width:70px;background:#282C55;" onclick="doRestChannelName();">重置</button>	
+				     </div>
+				 </div>
+		    </div>
+	    </div>
+	    <div class="row  office-header-content">
+	         <div class="col-sm-3 col-md-3 pd">
+	            <div  class="col-info">
+	               <div class="title">数据汇总信息</div>
+	               <div class="content base-info" id="base-info">
+	                 <table>
+	                    <tr>
+                           <td colspan="4"><div class="channel-name">XXXX</div></td>
+                        </tr>
+	                    <tr>
+	                       <td rowspan="2"><div id="integral_echart" class="integral-echart"></div></td>
+	                       <td><div class="ding-dan-bg"></div></td>
+	                       <td><div class="ke-liu-bg"></div></td>
+	                       <td><div class="pai-dui-ji-bg"></div></td>
+	                    </tr>
+	                    <tr>
+					       <td><div class="liang-shu-zhi" type="dingdanVal">--</div></td>
+					       <td><div class="liang-shu-zhi" type="custNumVal">--</div></td>
+					       <td><div class="liang-shu-zhi" type="lineUpVal">--</div></td>
+						</tr>
+						<tr class="td-shu-zhi">
+						   <td class="popval">总试飞数</td>
+						   <td>今日试飞</td>
+						   <td>人员数</td>
+						   <td>服务器数</td>
+						</tr>
+						<tr>
+						    <td class="label-name">今日问题：</td>
+						    <td class="label-value  device-score">
+						       <div class="channel-total-score">0</div>
+						    </td>
+						</tr>
+						<tr>
+					      <td class="label-name">历史问题：</td>
+					      <td class="label-value  device-score">
+					         <div class="score-val">--</div>
+					      </td>
+					      <td class="label-name">平均试飞时间：</td>
+					      <td class="label-value avgtime">
+					        <div class="score-val">--</div>
+					      </td>
+					    </tr>
+					    <tr>
+					       <td class="label-name">违规行为：</td>
+					       <td class="label-value weigui">
+					         <div class="score-val">--</div>
+					       </td>
+					       <td class="label-name">前端设备数：</td>
+					       <td class="label-value yingxiao">
+					         <div class="score-val">--</div>
+					       </td>
+					   </tr>
+					   
+	                 </table>
+	               </div>
+	            </div>
+	         </div>
+	         <div class="col-sm-6 col-md-6 pd">
+	            <div  class="col-info">
+	               <div class="title">前端数据接收详情 </div>
+	               <div class="content" id="channel_handle_detail"></div>
+	            </div>
+	         </div>
+	         <div class="col-sm-3 col-md-3 pd">
+	            <div  class="col-info">
+	               <div class="title">今日试飞机型</div>
+	               <div class="content staff-info" id="staff-info">
+	               </div>
+	            </div>
+	         </div>
+	         <div class="col-sm-3 col-md-3 pd device-info-col">
+	            <div  class="col-info">
+	               <div class="title">服务器监控面板</div>
+<!--	               <div class="title-icon">-->
+<!--	                  <div class="device-alarm"><svg class="icon" aria-hidden="true"><use xlink:href="#icongaojing2"></use></svg><span type="grayGrade">0</span></div>-->
+<!--	                  <div class="device-alarm"><svg class="icon" aria-hidden="true"><use xlink:href="#icongaojing1"></use></svg><span type="redGrade">0</span></div>-->
+<!--	                  <div class="device-alarm"><svg class="icon" aria-hidden="true"><use xlink:href="#icongaojing"></use></svg><span type="greenGrade">0</span></div>-->
+<!--	               </div>-->
+	               <div class="content deviceInfo" id="device-info">
+	               </div>
+	            </div>
+	         </div>
+	         <div class="col-sm-5 col-md-5 pd time-step-col">
+	            <div  class="col-info">
+	               <div class="title">数据处理时间统计</div>
+	               <div class="content" id="time-step-detial"></div>
+	            </div>
+	         </div>
+	         <div class="col-sm-4 col-md-4 pd business-type-time-col">
+	            <div  class="col-info">
+	               <div class="title">异常数据监测</div>
+	               <div class="content" id="business-type-time-detial"></div>
+	            </div>
+	         </div>
+	    </div>
+    </div>
+    <!--特效动画效果-->
+	<div id="query-page-data" style="display:none" onclick="loadPageData()"  sa-gatherClick="true" elementCode="dataanalysis-m001-p0007-e00001"  elementName="查询数据"></div>
+	<script th:src="@{/js/pluginsPackage/jquery/jquery.1.11.3.min.js}" type="text/javascript" charset="utf-8"></script>
+	<script th:src="@{/js/pluginsPackage/bootstrap-3.3.0/bootstrap.js}" type="text/javascript" charset="utf-8"></script>
+  <script th:src="@{/js/pluginsPackage/bootstrap-3.3.0/respond.js}" type="text/javascript" charset="utf-8"></script>
+	<script th:src="@{/js/pluginsPackage/swiper/swiper.min.js}" type="text/javascript" charset="utf-8"></script>
+	<script th:src="@{/js/pluginsPackage/echarts/echarts.min.js}" type="text/javascript" charset="utf-8"></script>
+	<script th:src="@{/js/office_efficiency_data.js}" type="text/javascript" charset="utf-8"></script>
+  <script th:src="@{/js/office_efficiency_index.js}" type="text/javascript" charset="utf-8"></script>
+</body>
+</html>
